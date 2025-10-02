@@ -10,7 +10,7 @@ interface TokenPayload {
     username: string;
 }
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
     try {
         const token = request.cookies.get('accessToken')?.value;
         if (!token) {

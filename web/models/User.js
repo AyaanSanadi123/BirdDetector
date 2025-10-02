@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcryptjs";
+import { SignJWT, jwtVerify } from 'jose';
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -46,21 +47,35 @@ userSchema.pre("save", async function (next) {
     }
 });
 
-userSchema.methods.generateTemporaryToken = function () {
-    const unHashedToken = crypto.randomBytes(20).toString("hex")
 
-    const hashedToken = crypto
-        .createHash("sha256")
-        .update(unHashedToken)
-        .digest("hex")
+userSchema.methods.generateAccessAndRefreshTokens = async function () {
+    try {
+        let secret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET);
 
-    const tokenExpiry = Date.now() + (20 * 60 * 1000) //20 mins
-    return { unHashedToken, hashedToken, tokenExpiry }
-};
+        // Create the Access Token using jose
+        const accessToken = await new SignJWT({
+            _id: this._id.toString(),
+            email: this.email,
+            username: this.username
+        })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setExpirationTime(process.env.ACCESS_TOKEN_EXPIRY)
+            .sign(secret);
 
+        secret = new TextEncoder().encode(process.env.REFRESH_TOKEN_SECRET);
+        const refreshToken = await new SignJWT({
+            _id: this._id.toString(),
+        })
+            .setProtectedHeader({ alg: 'HS256' })
+            .setExpirationTime(process.env.REFRESH_TOKEN_EXPIRY)
+            .sign(secret);
 
+        return { accessToken, refreshToken }
+    } catch (error) {
+        console.error("Error generating tokens:", error);
+    }
 
-
+}
 
 
 

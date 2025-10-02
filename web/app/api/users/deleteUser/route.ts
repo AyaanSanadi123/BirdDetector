@@ -1,4 +1,5 @@
 import User from "@/models/User";
+import Search from "@/models/searchModel"
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/dbConfig/dbConfig";
 import {jwtVerify} from  'jose';
@@ -15,6 +16,7 @@ export async function DELETE(request: NextRequest) {
         }
         const secret = new TextEncoder().encode(process.env.REFRESH_TOKEN_SECRET!);
         const { payload } = await jwtVerify(token, secret)
+        await Search.deleteMany({ user: payload._id });
         const user = await User.findByIdAndDelete(payload._id)
         if(!user){
             return NextResponse.json({error :" could not delete this account" },{status : 400})

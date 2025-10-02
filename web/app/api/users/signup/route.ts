@@ -26,25 +26,22 @@ export async function POST(request: NextRequest) {
         if (isEmail) {
             return NextResponse.json({ error: "user already exists!!" }, { status: 400 })
         }
-        const salt = await bcryptjs.genSalt(10)
-        const hashedPassword = await bcryptjs.hash(password, salt)
-
-        const user = await User.create({
+        const { unHashedToken, hashedToken, tokenExpiry } = await generateTemporaryToken() // for email verification
+        
+        const newUser = new User({ // Using new User() or User.create() both work
             username,
             email,
-            password: hashedPassword,
+            password: password, // <-- Pass the PLAIN password directly
+            verifyToken: hashedToken,
+            verifyTokenExpiry: tokenExpiry,
+        });
 
-        })
-
-        const { unHashedToken, hashedToken, tokenExpiry } = await generateTemporaryToken() // for email verification
-
-
-        user.verifyToken = hashedToken
-        user.verifyTokenExpiry = tokenExpiry
-        await user.save({ validateBeforeSave: false })
+        const user = await newUser.save();
+        
+        
 
 
-        await sendEmail({email, emailType: "VERIFY",unHashedToken})
+        await sendEmail({ email, emailType: "VERIFY", unHashedToken })
 
         return NextResponse.json({
             message: "User created successfully",
@@ -52,7 +49,7 @@ export async function POST(request: NextRequest) {
             user
         })
 
-    } catch (error : any) {
-        return NextResponse.json({error: error.message}, {status: 500})
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 500 })
     }
 }

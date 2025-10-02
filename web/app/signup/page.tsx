@@ -14,9 +14,10 @@ import { Label } from "@/components/ui/label";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from "axios";
+import axiosInstance from "@/helpers/axiosInstance";
 
-export default function SignUpPage() { // Renamed from SignInPage for clarity
+export default function SignUpPage() {
+  // Renamed from SignInPage for clarity
   const router = useRouter();
 
   const [user, setUser] = useState({
@@ -33,12 +34,17 @@ export default function SignUpPage() { // Renamed from SignInPage for clarity
     event.preventDefault(); // And prevents the default page reload
     try {
       setLoading(true);
-      await axios.post("/api/users/signup", user);
+      await axiosInstance.post("/api/users/signup", user);
       toast.success("Signup successful! Please verify your email.");
       router.push("/verifyemail");
     } catch (error: any) {
-      console.error("Signup failed:", error);
-      toast.error(error.response?.data?.error || "An unexpected error occurred.");
+      console.error("Signup failed:", error.response?.data || error.message);
+
+      // Use the specific error message from your API if it exists
+      const errorMessage =
+        error.response?.data?.error || "Signup failed. Please try again.";
+
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -51,7 +57,11 @@ export default function SignUpPage() { // Renamed from SignInPage for clarity
   };
 
   useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0 && user.username.length > 0) {
+    if (
+      user.email.length > 0 &&
+      user.password.length > 0 &&
+      user.username.length > 0
+    ) {
       setDisableButton(false);
     } else {
       setDisableButton(true);
@@ -104,7 +114,11 @@ export default function SignUpPage() { // Renamed from SignInPage for clarity
               required
             />
           </div>
-          <Button type="submit" className="w-full" disabled={disableButton || loading}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={disableButton || loading}
+          >
             {loading ? "Signing Up..." : "Sign Up"}
           </Button>
         </CardContent>
@@ -114,7 +128,7 @@ export default function SignUpPage() { // Renamed from SignInPage for clarity
         <p className="text-sm text-gray-500">
           Already have an account?{" "}
           <Link href="/login" className="underline hover:text-primary">
-          Login
+            Login
           </Link>
         </p>
       </CardFooter>

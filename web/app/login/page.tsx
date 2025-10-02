@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import axiosInstance from "@/helpers/axiosInstance";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,9 +30,9 @@ export default function LoginPage() {
     event.preventDefault(); // Prevent default form submission and page reload
     try {
       setLoading(true);
-      await axios.post("/api/users/login", user);
+      await axiosInstance.post("/api/users/login", user);
       toast.success("Login successful!");
-      router.push("/profile");
+      router.push("/dashboard");
     } catch (error: any) {
       console.error("Login failed:", error);
       toast.error(error.response?.data?.error || "Login failed. Please check your credentials.");

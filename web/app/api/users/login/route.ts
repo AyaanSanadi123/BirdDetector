@@ -12,11 +12,12 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({error : "email and password are required!"},{status: 400})
         }
         const user = await User.findOne({email})
+      
         if(!user){
             return NextResponse.json({error : "this user is not registered!"},{status : 400})
         }
 
-        if (!user.isVerfied) {
+        if (!user.isVerified) {
             return NextResponse.json(
                 { error: "Please verify your email before logging in." },
                 { status: 403 } // 403 Forbidden is a good status code for this
