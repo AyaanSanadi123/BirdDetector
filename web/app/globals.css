@@ -112,7 +112,12 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
-
+.signup-background {
+  background-image: url("/sign-up-page.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -28,3 +28,6 @@ export async function DELETE(request: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
+// review this later, figure out how the history feature will be linked here
+
