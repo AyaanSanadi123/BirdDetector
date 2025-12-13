@@ -1,0 +1,21 @@
+# --- IGNORE THESE FOLDERS ---
+training/model_1/Data/
+training/model_1/Data
+Data/
+.venv/
+venv/
+node_modules/
+.next/
+__pycache__/
+
+# --- IGNORE THESE FILES ---
+.env
+.env.local
+*.h5
+*.pt
+*.keras
+*.jpg
+*.jpeg
+*.png
+.DS_Store
+Thumbs.db
