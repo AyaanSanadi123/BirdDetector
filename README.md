@@ -22,9 +22,7 @@
 
 See the model in action:
 
-[![Watch the Demo](https://drive.google.com/file/d/1LhT9CdE1m-32JD8mssR_Z7X_z4kPMaff/view?usp=drive_link)
-
-
+### [▶️ Click Here to Watch the Demo Video](https://drive.google.com/file/d/1LhT9CdE1m-32JD8mssR_Z7X_z4kPMaff/view?usp=drive_link)
 
 ---
 
@@ -74,6 +72,4 @@ We gratefully acknowledge the researchers at Caltech, Cornell Tech, and the visi
 * **API:** Python (Flask/FastAPI)
 * **AI Engine:** PyTorch / TensorFlow
 * **Database:** Supabase (PostgreSQL)
-
----
 
