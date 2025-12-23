@@ -13,7 +13,7 @@
 **Decode the Sky in Real Time.** BirdSpec is an advanced computer vision platform designed to bridge the gap between human observation and scientific classification.
 
 [View Demo](#-demo) • [The AI Model](#-the-intelligence) • [Installation](#-installation) • [Credits](#-data--credits)
-
+https://drive.google.com/file/d/1LhT9CdE1m-32JD8mssR_Z7X_z4kPMaff/view?usp=drive_link
 </div>
 
 ---
